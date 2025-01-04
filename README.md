@@ -24,7 +24,7 @@ Client-Side Rendering
 
 ## UI Design
 Here is the demo ui design for our app. Our is intended to look like this.
-Figma Link:
+Figma Link: https://www.figma.com/design/tIkh12fwnBANAjnaqzSteG/CSE-3100-Project-Haven?node-id=1-5&p=f&t=oLO74Q6Ofinllqu6-0
 
 
 ## Technology Stack
