@@ -20,11 +20,11 @@ This project is a web-based platform designed to support an NGO in managing its 
 - *Category Management*
 
 ## Rendering Method:
-      Client-Side Rendering  
+Client-Side Rendering  
 
 ## UI Design
 Here is the demo ui design for our app. Our is intended to look like this.
-Figma Link: https://www.figma.com/design/9qh1bzitaHaZ40DTtM8KHn/Untitled?node-id=8-30&t=xdJUmRyvACXx2qLs-1
+Figma Link:
 
 
 ## Technology Stack
