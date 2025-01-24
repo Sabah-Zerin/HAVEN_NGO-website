@@ -13,7 +13,7 @@ const Homepage = () => {
         <div className="nav-links">
           <Link to="/campaigns">Campaigns</Link>
           <Link to="/about">About Us</Link>
-          <Link to="/login">LogIn/Reg</Link>
+          <Link to="/login">LogIn/Reg</Link> {/* Make sure this points to /login */}
           <Link to="/contact">Contact Us</Link>
         </div>
       </nav>
