@@ -9,11 +9,12 @@ const Signin = () => {
       <Navbar />
       <div className="auth-container">
         <div className="auth-left">
-          <h1>Welcome Back!</h1>
-          <p>Sign in to your account to continue accessing our exclusive services.</p>
-          <Link to="/register" className="auth-switch-link">
-            Don't have an account? Signup
-          </Link>
+        <h1>Welcome Back!</h1>
+<p>Sign in to your account to continue accessing our exclusive services.</p>
+<Link to="/register" className="auth-switch-link">
+  Don't have an account? Signup
+</Link>
+
         </div>
         <div className="auth-right">
           <h2>Signin</h2>
