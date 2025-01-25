@@ -6,10 +6,21 @@ import './Donation.css';
 const Donation = () => {
   const navigate = useNavigate();
 
-  const handlePayment = (e) => {
+  const handleDonate = (e) => {
     e.preventDefault(); // Prevent form submission
-    navigate('/payment-details'); // Navigate to PaymentDetails page
+
+    // Check if the user is logged in (token stored in localStorage)
+    const token = localStorage.getItem('user_token');
+    if (!token) {
+      // Redirect to the signup page if not logged in
+      navigate('/register');
+    } else {
+      
+      // Redirect to PaymentDetails page if logged in
+      navigate('/payment-details');
+    }
   };
+
 
   return (
     <>
@@ -18,7 +29,7 @@ const Donation = () => {
         <div className="donation-content">
           <h1>DONATE & HELP CHILDREN FOR EDUCATION</h1>
 
-          <form className="donation-form" onSubmit={handlePayment}>
+          <form className="donation-form" onSubmit={handleDonate}>
             <h2>DONATE NOW</h2>
             <input type="text" placeholder="Name" required />
             <input type="email" placeholder="Email" required />
