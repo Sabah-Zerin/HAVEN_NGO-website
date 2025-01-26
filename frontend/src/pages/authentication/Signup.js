@@ -89,7 +89,7 @@ const Signup = () => {
 
   return (
     <>
-      <Navbar />
+      
       <div className="auth-container">
         <div className="auth-left">
 

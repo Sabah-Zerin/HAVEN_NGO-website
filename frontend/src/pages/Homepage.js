@@ -12,7 +12,7 @@ const Homepage = () => {
 
   return (
     <div className="homepage">
-      <Navbar />
+      
       {/* Hero Section */}
       <section className="hero">
         <h2>Empowering communities, transforming lives. Together, we make a difference.</h2>

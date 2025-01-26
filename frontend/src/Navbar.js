@@ -1,19 +1,45 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Navbar.css'; // Add styles for the navigation bar
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import "./Navbar.css";
 
 const Navbar = () => {
+  const location = useLocation();
+
   return (
     <nav className="nav-bar">
+      {/* Logo Section */}
       <div className="logo-container">
-        <img src="/favicon.ico" className="logo" alt="Haven Logo" />
+        <Link to="/">
+          <img src="/favicon.ico" className="logo" alt="Haven Logo" />
+        </Link>
       </div>
+
+      {/* Navigation Links */}
       <div className="nav-links">
-        <Link to="/">Home</Link>
-        <Link to="/campaigns">Campaigns</Link>
-        <Link to="/about">About Us</Link>
-        <Link to="/login">LogIn/Reg</Link>
-        <Link to="/contact">Contact Us</Link>
+        <Link
+          to="/campaigns"
+          className={location.pathname === "/campaigns" ? "active-link" : ""}
+        >
+          Campaigns
+        </Link>
+        <Link
+          to="/about"
+          className={location.pathname === "/about" ? "active-link" : ""}
+        >
+          About Us
+        </Link>
+        <Link
+          to="/login"
+          className={location.pathname === "/login" ? "active-link" : ""}
+        >
+          Log In / Register
+        </Link>
+        <Link
+          to="/contact"
+          className={location.pathname === "/contact" ? "active-link" : ""}
+        >
+          Contact Us
+        </Link>
       </div>
     </nav>
   );

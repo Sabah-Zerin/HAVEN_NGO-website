@@ -29,7 +29,7 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar /> {/* Render Navbar */}
+      
       <div className="profile-container">
         <div className="profile-card">
           <h2 className="profile-title">User Profile</h2>

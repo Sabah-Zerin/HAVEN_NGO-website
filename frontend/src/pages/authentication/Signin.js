@@ -91,7 +91,7 @@ const Signin = () => {
 
   return (
     <>
-      <Navbar />
+      
       <div className="auth-container">
         <div className="auth-left">
           <h1>Welcome Back!</h1>
