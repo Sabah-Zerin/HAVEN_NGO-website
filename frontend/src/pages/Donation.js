@@ -24,7 +24,7 @@ const Donation = () => {
 
   return (
     <>
-      <Navbar />
+      
       <div className="donation-container" style={{ backgroundImage: `url('/donation.jpg')` }}>
         <div className="donation-content">
           <h1>DONATE & HELP CHILDREN FOR EDUCATION</h1>
