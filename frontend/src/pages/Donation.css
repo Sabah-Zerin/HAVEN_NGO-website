@@ -1,20 +1,25 @@
 .donation-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    color: white;
-    text-align: center;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  position: relative; /* Ensure it doesn't overlap */
+  z-index: 1; /* Keeps it behind the navigation bar */
   }
   
   .donation-content h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    z-index: 1; /* Ensure the heading is above other elements */
+    margin-top: 145px; /* Add space from the top */
+    pointer-events: auto; /* Ensure clicks pass through */
   }
   
   .donation-form {
