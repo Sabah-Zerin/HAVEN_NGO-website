@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
   const location = useLocation();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
     <nav className="nav-bar">
@@ -28,12 +29,31 @@ const Navbar = () => {
         >
           About Us
         </Link>
-        <Link
-          to="/login"
-          className={location.pathname === "/login" ? "active-link" : ""}
+        <div
+          className="dropdown"
+          onMouseEnter={() => setDropdownOpen(true)}
+          onMouseLeave={() => setDropdownOpen(false)}
         >
-          Log In / Register
-        </Link>
+          <button className="dropdown-toggle">
+            Log In / Register ▼
+          </button>
+          {dropdownOpen && (
+            <ul className="dropdown-menu">
+              <li>
+                <Link to="/login">User Login</Link>
+              </li>
+              <li>
+                <Link to="/register">User Register</Link>
+              </li>
+              <li>
+                <Link to="/admin-login">Admin Login</Link>
+              </li>
+              <li>
+                <Link to="/admin-register">Admin Register</Link>
+              </li>
+            </ul>
+          )}
+        </div>
         <Link
           to="/contact"
           className={location.pathname === "/contact" ? "active-link" : ""}
@@ -46,3 +66,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
