@@ -40,7 +40,7 @@ const Donation = () => {
         <section className="about-section">
           <h2>WHO WE ARE</h2>
           <p>
-            At the Lorem Ipsum generators, we are committed to helping communities worldwide.
+            At the Haven, we are committed to helping communities worldwide.
             Your donation empowers children with education and ensures a brighter future.
           </p>
         </section>
