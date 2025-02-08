@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
-import Navbar from '../../Navbar';
+//import Navbar from '../../Navbar';
 import './Auth.css';
 
 const Signup = () => {
