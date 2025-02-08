@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from '../../Navbar';
+//import Navbar from '../../Navbar';
 import './Auth.css';
 
 const Signin = () => {
