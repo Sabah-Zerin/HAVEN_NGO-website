@@ -1,0 +1,89 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #b3e5fc, #f8bbd0);
+  text-align: center;
+}
+
+/* Introduction Section */
+.intro-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.intro-overlay img.intro-placeholder {
+  width: 60%;
+  max-width: 900px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.intro-text {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 15px;
+}
+
+/* Campaigns Section */
+.campaigns-section {
+  margin: 40px auto;
+  width: 90%; /* Adjusted width for better layout */
+  max-width: 1200px;
+}
+
+.campaigns-title {
+  font-size: 20px;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: center; /* Center the text */
+}
+
+.campaigns-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Grid layout */
+  gap: 20px;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.campaign {
+  background: white;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.campaign:hover {
+  transform: scale(1.05);
+}
+
+.campaign img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+.donate-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #4a148c;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0 0 12px 12px;
+}
+
+.donate-btn:hover {
+  background-color: #6a1b9a;
+}
