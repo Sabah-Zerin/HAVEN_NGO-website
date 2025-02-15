@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-//import Navbar from '../../Navbar';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';  // Importing the new CSS styles
 

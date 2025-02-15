@@ -1,63 +1,72 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link, useLocation } from "react-router-dom";
+import "./Navbar.css";
 
 const Navbar = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const location = useLocation();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
+    setDropdownOpen((prevState) => !prevState);
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm custom-navbar">
-      <div className="container">
-        {/* Logo Button - Home */}
-        <Link className="navbar-brand" to="/">
-          <img src="/favicon.ico" alt="Haven Logo" className="nav-logo" />
+    <nav className="nav-bar">
+      {/* Logo Section */}
+      <div className="logo-container">
+        <Link to="/">
+          <img src="/favicon.ico" className="logo" alt="Haven Logo" />
+        </Link>
+      </div>
+
+      {/* Navigation Links */}
+      <div className="nav-links">
+        <Link
+          to="/campaigns"
+          className={location.pathname === "/campaigns" ? "active-link" : ""}
+        >
+          Campaigns
+        </Link>
+        <Link
+          to="/about"
+          className={location.pathname === "/about" ? "active-link" : ""}
+        >
+          About Us
         </Link>
 
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-          <ul className="navbar-nav nav-buttons">
-            <li className="nav-item">
-              <Link className="nav-link nav-btn" to="/campaigns">Campaigns</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link nav-btn" to="/about">About Us</Link>
-            </li>
-            <li className="nav-item nav-gap">
-              <Link className="nav-link nav-btn" to="/contact">Contact Us</Link>
-            </li>
-
-            {/* Dropdown - Login/Register */}
-            <li className="nav-item position-relative">
-              <button className="nav-link dropdown-toggle nav-btn login-btn" onClick={toggleDropdown}>
-                Log In / Register
-              </button>
-              {isDropdownOpen && (
-                <ul className="dropdown-menu show">
-                  <li><Link className="dropdown-item" to="/login">User Login</Link></li>
-                  <li><Link className="dropdown-item" to="/register">User Register</Link></li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li><Link className="dropdown-item" to="/admin-login">Admin Login</Link></li>
-                  <li><Link className="dropdown-item" to="/admin-register">Admin Register</Link></li>
-                </ul>
-              )}
-            </li>
-          </ul>
+        {/* Dropdown Section */}
+        <div className="dropdown">
+          <button className="nav-btn login-btn" onClick={toggleDropdown}>
+            Log In
+          </button>
+          {dropdownOpen && (
+            <div className="dropdown-menu">
+              <Link
+                to="/login"
+                className={location.pathname === "/login" ? "active-link" : ""}
+                onClick={() => setDropdownOpen(false)}
+              >
+                User Login
+              </Link>
+              <Link
+                to="/admin-login"
+                className={
+                  location.pathname === "/admin-login" ? "active-link" : ""
+                }
+                onClick={() => setDropdownOpen(false)}
+              >
+                Admin Login
+              </Link>
+            </div>
+          )}
         </div>
+
+        <Link
+          to="/contact"
+          className={location.pathname === "/contact" ? "active-link" : ""}
+        >
+          Contact Us
+        </Link>
       </div>
     </nav>
   );

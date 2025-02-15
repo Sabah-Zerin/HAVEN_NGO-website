@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
-//import Navbar from '../../Navbar';
+import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
 
 const Signup = () => {
@@ -13,8 +12,21 @@ const Signup = () => {
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [authError, setAuthError] = useState('');
 
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the user is already logged in
+    const userToken = localStorage.getItem('user_token');
+    const adminToken = localStorage.getItem('admin_token');
+    if (userToken) {
+      setAuthError('You are already logged in as a User, please logout to sign up as an Admin.');
+    }
+    if (adminToken) {
+      setAuthError('You are already logged in as an Admin, please logout to sign up as a User.');
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,6 +64,8 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (authError) return;
+
     const validationError = validateForm();
     if (validationError) {
       setError(validationError);
@@ -73,8 +87,7 @@ const Signup = () => {
           password: '',
           password_confirmation: '',
         });
-
-        navigate('/login'); // Redirect to the Signin page
+        navigate('/login'); // Redirect to the Login page
       }
     } catch (error) {
       if (error.response) {
@@ -88,25 +101,16 @@ const Signup = () => {
   };
 
   return (
-    <>
-      
-      <div className="auth-container">
-        <div className="auth-left">
-
+    <div className="auth-container">
+      <div className="auth-left">
         <h1>Come Join Us!</h1>
-<p>
-  We are so excited to have you here. Create an account to get access to
-  exclusive offers, rewards, and discounts.
-</p>
-<Link to="/login" className="auth-switch-link">
-  Already have an account? Sign in.
-</Link>
-
-
-
-        </div>
-        <div className="auth-right">
-          <h2>Signup</h2>
+        <p>We are so excited to have you here. Create an account to get access to exclusive offers, rewards, and discounts.</p>
+        <Link to="/login" className="auth-switch-link">Already have an account? Log in.</Link>
+      </div>
+      <div className="auth-right">
+        <h2>Signup</h2>
+        {authError && <p className="auth-error">{authError}</p>}
+        {!authError && (
           <form onSubmit={handleSubmit}>
             <input
               type="text"
@@ -142,11 +146,11 @@ const Signup = () => {
             />
             <button type="submit">Signup</button>
           </form>
-          {error && <p className="error" aria-live="polite">{error}</p>}
-          {success && <p className="success" aria-live="polite">{success}</p>}
-        </div>
+        )}
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
       </div>
-    </>
+    </div>
   );
 };
 

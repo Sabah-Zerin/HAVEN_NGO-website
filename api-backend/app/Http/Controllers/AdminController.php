@@ -14,7 +14,7 @@ class AdminController extends Controller
         $request->validate([
             'name'         => 'required|string|max:255',
             'email'        => 'required|string|email|max:255|unique:admins',
-            'password'     => 'required|string|min:6',
+            'password'     => 'required|string|min:3',
             'admin_secret' => 'required|string'
         ]);
 

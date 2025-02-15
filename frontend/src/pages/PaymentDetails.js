@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../Navbar';
-import './PaymentDetails.css'; // Create a CSS file for styling
+import './PaymentDetails.css'; 
 
 const PaymentDetails = () => {
   const navigate = useNavigate();
@@ -12,7 +11,6 @@ const PaymentDetails = () => {
 
   return (
     <>
-      <Navbar />
       <div className="payment-container">
         <div className="payment-box">
           <h2>Choose a Payment Method</h2>

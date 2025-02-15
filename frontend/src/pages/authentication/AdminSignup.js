@@ -1,63 +1,152 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import './Auth.css';
 
 const AdminSignup = () => {
-  const [admin, setAdmin] = useState({
-    name: "",
-    email: "",
-    password: "",
-    admin_secret: ""
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    admin_secret: '',
   });
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [authError, setAuthError] = useState('');
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the admin or user is already logged in
+    const userToken = localStorage.getItem('user_token');
+    const adminToken = localStorage.getItem('admin_token');
+    if (userToken) {
+      setAuthError('You are already logged in as a User, please logout to sign up as an Admin.');
+    }
+    if (adminToken) {
+      setAuthError('You are already logged in as an Admin, please logout to sign up as a User.');
+    }
+  }, []);
 
   const handleChange = (e) => {
-    setAdmin({ ...admin, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    setError('');
+    setSuccess('');
+  };
+
+  const validateForm = () => {
+    const { name, email, password, admin_secret } = formData;
+
+    if (!name || !email || !password || !admin_secret) {
+      return 'Please fill out all fields';
+    }
+
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailPattern.test(email)) {
+      return 'Email is not valid';
+    }
+
+    if (password.length < 3) {
+      return 'Password must be at least 3 characters';
+    }
+
+    return null;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (authError) return;
+
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost:8000/api/admin/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(admin),
+      const response = await axios.post('http://localhost:8000/api/admin/register', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-      const data = await response.json();
-      if (response.ok) {
-        setMessage("Admin registered successfully");
-      } else {
-        setMessage(data.message || "Registration failed");
+
+      if (response.status === 201) {
+        setSuccess('Admin registered successfully!');
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          admin_secret: '',
+        });
+        navigate('/admin-login'); // Redirect to Admin Login page
       }
     } catch (error) {
-      setMessage("Error: " + error.message);
+      if (error.response) {
+        setError(error.response.data.message || 'Signup failed. Please try again.');
+      } else if (error.request) {
+        setError('No response from the server. Please try again later.');
+      } else {
+        setError('An error occurred. Please try again.');
+      }
     }
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: "100vh", backgroundColor: "#f5f5f5" }}>
-      <div className="card shadow" style={{ width: "400px" }}>
-        <div className="card-body">
-          <h3 className="card-title text-center mb-4">Admin Registration</h3>
-          {message && <div className="alert alert-info">{message}</div>}
+    <div className="auth-container">
+      <div className="auth-left">
+        <h1>Welcome Admin!</h1>
+        <p>Create an admin account to manage the platform efficiently.</p>
+        <Link to="/admin-login" className="auth-switch-link">
+          Already an admin? Log in
+        </Link>
+      </div>
+      <div className="auth-right">
+        <h2>Admin Signup</h2>
+        {authError && <p className="auth-error">{authError}</p>}
+        {!authError && (
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">Full Name</label>
-              <input type="text" className="form-control" id="name" name="name" value={admin.name} onChange={handleChange} required placeholder="Enter full name" />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">Email Address</label>
-              <input type="email" className="form-control" id="email" name="email" value={admin.email} onChange={handleChange} required placeholder="Enter email" />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">Password</label>
-              <input type="password" className="form-control" id="password" name="password" value={admin.password} onChange={handleChange} required placeholder="Enter password" />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="admin_secret" className="form-label">Admin Registration Code</label>
-              <input type="text" className="form-control" id="admin_secret" name="admin_secret" value={admin.admin_secret} onChange={handleChange} required placeholder="Enter registration code" />
-            </div>
-            <button type="submit" className="btn btn-primary w-100">Register</button>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Full Name"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+              required
+            />
+            <input
+              type="text"
+              name="admin_secret"
+              value={formData.admin_secret}
+              onChange={handleChange}
+              placeholder="Admin Registration Code"
+              required
+            />
+            <button type="submit">Sign Up</button>
           </form>
-        </div>
+        )}
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
       </div>
     </div>
   );

@@ -1,72 +1,76 @@
-.custom-navbar {
-    height: 80px; /* Increased height */
-    display: flex;
-    align-items: center;
-    padding: 10px 50px;
-}
-
-/* Logo */
-.nav-logo {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-}
-
-/* Navigation Buttons */
-.nav-buttons {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* More spacing */
-}
-
-/* Spacing for Contact Us */
-.nav-gap {
-    margin-right: 25px;
-}
-
 /* General Button Style */
 .nav-btn {
-    padding: 10px 22px;
-    border-radius: 25px; /* Pill shape */
-    border: 2px solid !important; /* Ensures outline */
-    background: white !important; /* Ensures white background */
-    font-size: 16px;
-    font-weight: 500;
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: 2px solid transparent;
+    font-size: 18px;
+    font-weight: 600;
     text-align: center;
     text-decoration: none;
-    transition: all 0.3s ease-in-out;
     display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Default Blue Buttons (Campaigns, About, Contact) */
+/* Button Hover Animation */
+.nav-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-btn:hover::before {
+    left: 100%;
+}
+
+/* Regular Navigation Buttons (Contact Us, About Us) */
+.nav-links a, .login-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: 2px solid transparent;
+    background: #d4d0d0;
+    color: #12151a;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover Effect for Regular Buttons */
+.nav-links a:hover, .login-btn:hover {
+    background: #d9e2ec;
+    color: #101111;
+    box-shadow: 0px 6px 12px rgba(0, 123, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Blue Buttons (Special CTA Buttons) */
 .blue-btn {
-    border-color: #007bff !important;
-    color: #007bff !important;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border: none;
 }
 
 .blue-btn:hover {
-    background: #007bff !important;
-    color: white !important;
-    box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.3);
+    background: linear-gradient(135deg, #0056b3, #003d82);
+    box-shadow: 0px 6px 15px rgba(0, 123, 255, 0.4);
 }
 
-/* Login/Register Button - Orange */
-.login-btn {
-    border-color: #ff6600 !important;
-    color: #ff6600 !important;
-}
-
-.login-btn:hover {
-    background: #ff6600 !important;
-    color: white !important;
-    box-shadow: 0px 4px 8px rgba(255, 102, 0, 0.3);
-}
-
-/* Dropdown Styling */
-.dropdown-menu {
-    position: absolute;
-    background: white;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    z-index: 1000;
+/* Active Link Styling */
+.nav-links .active-link {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-weight: 700;
 }
