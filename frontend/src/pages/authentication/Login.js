@@ -23,7 +23,6 @@ const Login = () => {
     }
   }, [navigate]);
 
-  // Handle form input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -64,17 +63,11 @@ const Login = () => {
 
       if (response.status === 200) {
         setSuccess('Login Successful!');
-        
-        // Hide success message after 5 seconds
-        setTimeout(() => {
-          setSuccess('');
-        }, 5000);
-
-        // Store token in localStorage
         localStorage.setItem('user_token', response.data.token);
         
-        // Redirect to homepage or any other page
-        navigate('/profile');
+        setTimeout(() => {
+          navigate('/profile');
+        }, 1500); // Short delay before navigation
       }
     } catch (error) {
       if (error.response) {
@@ -88,41 +81,39 @@ const Login = () => {
   };
 
   return (
-    <>
-      <div className="auth-container">
-        <div className="auth-left">
-          <h1>Welcome Back!</h1>
-          <p>Log in to your account to continue accessing our exclusive services.</p>
-          <Link to="/register" className="auth-switch-link">
-            Don't have an account? Sign up
-          </Link>
-        </div>
-        <div className="auth-right">
-          <h2>Log In</h2>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Password"
-              required
-            />
-            <button type="submit">Log In</button>
-          </form>
-          {error && <p className="error" aria-live="polite">{error}</p>}
-          {success && <p className="success" aria-live="polite">{success}</p>}
-        </div>
+    <div className="auth-container">
+      <div className="auth-left">
+        <h1>Welcome Back!</h1>
+        <p>Log in to your account to continue accessing our exclusive services.</p>
+        <Link to="/register" className="auth-switch-link">
+          Don't have an account? Sign up
+        </Link>
       </div>
-    </>
+      <div className="auth-right">
+        <h2>Log In</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Password"
+            required
+          />
+          <button type="submit">Log In</button>
+        </form>
+        {error && <p className="error" aria-live="polite">{error}</p>}
+        {success && <p className="success" aria-live="polite">{success}</p>}
+      </div>
+    </div>
   );
 };
 

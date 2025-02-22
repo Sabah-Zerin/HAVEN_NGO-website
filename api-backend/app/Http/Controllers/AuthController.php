@@ -12,43 +12,46 @@ class AuthController extends Controller
 {
     public function signup(Request $request)
     {
-        try{
-        // Validate incoming request data
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:3|confirmed',
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:3|confirmed',
+            ]);
 
-        // Create a new user
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-        ]);
+            User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+            ]);
 
-        // Return a response, could also return a token for authenticated user
-        return response()->json(['message' => 'User created successfully'], 201);}
-        catch (\Exception $e) {
-            return response()->json(['message' => 'Failed','exception' => (string) $e], 400);
+            return response()->json(['message' => 'User created successfully'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed', 'exception' => $e->getMessage()], 400);
         }
     }
 
-      public function login(Request $request)
-      {
-          // Validate incoming request data
-          $validated = $request->validate([
-              'email' => 'required|email',
-              'password' => 'required|string',
-          ]);
-  
-          // Attempt to authenticate the user
-          if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
-              $user = Auth::user();
-              // Generate a token or return user data (e.g., JWT token or session)
-              return response()->json(['message' => 'Login successful', 'user' => $user], 200);
-          }
-  
-          return response()->json(['message' => 'Invalid credentials'], 401);
-      }
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Login successful',
+            'user' => $user,
+            'user_token' => $token // Match the key used in localStorage
+        ], 200);
+    }
 }

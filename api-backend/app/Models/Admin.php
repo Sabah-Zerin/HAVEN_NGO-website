@@ -21,4 +21,6 @@ class Admin extends Authenticatable
         'password',
     ];
 }
-
+class User extends Authenticatable {
+    use HasApiTokens, Notifiable;
+}
