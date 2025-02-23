@@ -21,6 +21,7 @@ Route::middleware('auth:api')->group(function () {
 
 // Admin-Only Routes
 Route::middleware('auth:admin')->group(function () {
+    Route::get('/admin', fn(Request $request) => $request->user());
     Route::apiResource('/campaigns', CampaignController::class)->except(['index']);
 });
 
