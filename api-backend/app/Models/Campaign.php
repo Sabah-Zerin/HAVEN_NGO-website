@@ -10,20 +10,16 @@ class Campaign extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'admin_id',
         'name',
         'description',
         'target_amount',
         'end_date'
     ];
 
-    protected $casts = [
-        'end_date' => 'date',
-        'target_amount' => 'float'
-    ];
-
-    public function user()
+    // app/Models/Campaign.php
+    public function admin()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Admin::class);
     }
 }

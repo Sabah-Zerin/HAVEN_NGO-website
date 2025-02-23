@@ -14,18 +14,21 @@ const Campaigns = () => {
   });
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  useEffect(() => { fetchCampaigns(); }, []);
+  useEffect(() => {
+    fetchCampaigns();
+    checkAdminStatus();
+  }, []);
+
+  const checkAdminStatus = () => {
+    const adminToken = localStorage.getItem('admin_token');
+    setIsAdmin(!!adminToken);
+  };
 
   const fetchCampaigns = async () => {
     try {
-      const token = localStorage.getItem('user_token');
-      const response = await axios.get('/campaigns', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json'
-        }
-      });
+      const response = await axios.get('/campaigns');
       setCampaigns(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       setError(error.response?.data?.message || 'Failed to fetch campaigns');
@@ -34,81 +37,112 @@ const Campaigns = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null); // Reset error state
+
     try {
-      const token = localStorage.getItem('user_token');
-      if (!token) {
-        setError('Session expired. Please login again.');
+      const adminToken = localStorage.getItem('admin_token');
+      if (!adminToken) {
+        setError('Admin authorization required. Please log in.');
         return;
       }
-  
+
+      // Validate inputs
+      const targetAmount = parseFloat(newCampaign.target_amount);
+      if (isNaN(targetAmount) || targetAmount <= 0) {
+        setError('Invalid target amount');
+        return;
+      }
+      if (!newCampaign.name.trim() || !newCampaign.end_date) {
+        setError('Please fill in all required fields.');
+        return;
+      }
+
+      // Log the payload to inspect
       const payload = {
-        ...newCampaign,
-        description: newCampaign.description || null,
-        target_amount: parseFloat(newCampaign.target_amount) || 0,
-        end_date: newCampaign.end_date ? new Date(newCampaign.end_date).toISOString().split('T')[0] : null,
+        name: newCampaign.name.trim(),
+        description: newCampaign.description?.trim(),
+        target_amount: targetAmount,
+        end_date: new Date(newCampaign.end_date).toISOString()
       };
-  
-      console.log("Sending Payload:", payload);
-  
+      console.log('Payload for campaign creation:', payload);
+
+      // API call with error handling
       const response = await axios.post('/campaigns', payload, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
           'Content-Type': 'application/json'
         }
       });
-  
+
+      console.log('API Response:', response);
+
       if (response.status === 201) {
-        console.log("Campaign Created:", response.data);
-        setCampaigns([response.data, ...campaigns]);
-        setShowForm(false);
-        setNewCampaign({ name: '', description: '', target_amount: '', end_date: '' });
+        // Optimistic update with proper state management
+        setCampaigns(prev => [response.data, ...prev]);
+        setShowForm(false); // Hide form after submission
+        setNewCampaign({
+          name: '',
+          description: '',
+          target_amount: '',
+          end_date: ''
+        });
       }
     } catch (error) {
-      console.error('Error:', error.response?.data);
-      setError(error.response?.data?.message || 'Failed to create campaign');
+      console.error('API Error:', error);
+      setError(error.response?.data?.message || 'Failed to create campaign. Please check your permissions.');
+
+      // Force logout on 401 error (Unauthorized)
+      if (error.response?.status === 401) {
+        localStorage.removeItem('admin_token');
+        setIsAdmin(false);
+      }
     }
   };
-  
 
   return (
     <div className="campaigns-container">
       <h1 className="campaigns-title">Our Campaigns</h1>
-      <button className="add-campaign-button" onClick={() => setShowForm(!showForm)}>
-        {showForm ? 'Cancel' : 'Add Campaign'}
-      </button>
+      
+      {isAdmin && (
+        <>
+          <button className="add-campaign-button" onClick={() => setShowForm(!showForm)}>
+            {showForm ? 'Cancel' : 'Add Campaign'}
+          </button>
 
-      {showForm && (
-        <form className="campaign-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Campaign Name"
-            value={newCampaign.name}
-            onChange={(e) => setNewCampaign({ ...newCampaign, name: e.target.value })}
-            required
-          />
-          <textarea
-            placeholder="Description"
-            value={newCampaign.description}
-            onChange={(e) => setNewCampaign({ ...newCampaign, description: e.target.value })}
-          />
-          <input
-            type="number"
-            placeholder="Target Amount"
-            value={newCampaign.target_amount}
-            onChange={(e) => setNewCampaign({ ...newCampaign, target_amount: e.target.value })}
-            required
-          />
-          <input
-              type="date"
-              value={newCampaign.end_date}
-              onChange={(e) => setNewCampaign({ 
-                  ...newCampaign,
-                  end_date: e.target.value // Ensure YYYY-MM-DD format
-              })}
-              required
-          />
-          <button type="submit">Create Campaign</button>
-        </form>
+          {showForm && (
+            <form className="campaign-form" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                placeholder="Campaign Name"
+                value={newCampaign.name}
+                onChange={(e) => setNewCampaign({ ...newCampaign, name: e.target.value })}
+                required
+              />
+              <textarea
+                placeholder="Description"
+                value={newCampaign.description}
+                onChange={(e) => setNewCampaign({ ...newCampaign, description: e.target.value })}
+              />
+              <input
+                type="number"
+                placeholder="Target Amount"
+                value={newCampaign.target_amount}
+                onChange={(e) => setNewCampaign({ ...newCampaign, target_amount: e.target.value })}
+                required
+              />
+              <input
+                type="date"
+                value={newCampaign.end_date}
+                onChange={(e) => setNewCampaign({ 
+                    ...newCampaign,
+                    end_date: e.target.value
+                })}
+                required
+              />
+              <button type="submit">Create Campaign</button>
+            </form>
+          )}
+        </>
       )}
 
       <div className="campaigns-list">
@@ -119,15 +153,16 @@ const Campaigns = () => {
             <div className="campaign-meta">
               <span>Target: ${campaign.target_amount}</span>
               <span>Ends: {new Date(campaign.end_date).toLocaleDateString()}</span>
-              <span>Created by: {campaign.user?.name || 'Unknown'}</span>
+              <span>Created by: {campaign.admin?.name || 'Admin'}</span>
             </div>
             <div className="campaign-actions">
-              <button className="details-button">View Details</button>
               <button className="donate-button">Donate Now</button>
             </div>
           </div>
         ))}
       </div>
+      
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };

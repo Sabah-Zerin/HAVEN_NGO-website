@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AdminController extends Controller
 {
-    // Admin Registration (with secret check)
+    // Admin Registration
     public function register(Request $request)
     {
         $request->validate([
@@ -36,29 +37,36 @@ class AdminController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email'    => 'required|string|email',
-            'password' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|string'
         ]);
-
-        $admin = Admin::where('email', $request->email)->first();
-
-        if (!$admin || !Hash::check($request->password, $admin->password)) {
+    
+        $credentials = $request->only('email', 'password');
+    
+        if (!$token = auth('admin')->attempt($credentials)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
-
-        $token = $admin->createToken('adminToken')->plainTextToken;
-
+    
         return response()->json([
-            'message' => 'Login successful',
-            'token'   => $token,
-            'admin'   => $admin
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('admin')->factory()->getTTL() * 60
         ]);
     }
 
-    // Logout (logs out the current session)
-    public function logout(Request $request)
+    // Logout (Invalidate JWT)
+    public function logout()
     {
-        $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Logged out successfully']);
+        auth('admin')->logout();
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('admin')->factory()->getTTL() * 60
+        ]);
     }
 }

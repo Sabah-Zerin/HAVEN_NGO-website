@@ -63,7 +63,7 @@ const Login = () => {
 
       if (response.status === 200) {
         setSuccess('Login Successful!');
-        localStorage.setItem('user_token', response.data.token);
+        localStorage.setItem('user_token', response.data.access_token);
         
         setTimeout(() => {
           navigate('/profile');

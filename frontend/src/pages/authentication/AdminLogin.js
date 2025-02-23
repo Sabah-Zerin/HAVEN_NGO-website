@@ -67,7 +67,8 @@ const AdminLogin = () => {
 
       if (response.status === 200) {
         setSuccess('Login successful!');
-        localStorage.setItem('admin_token', response.data.token);
+        // In your AdminLogin component
+        localStorage.setItem('admin_token', response.data.access_token);
         navigate('/admin-dashboard');
       }
     } catch (error) {

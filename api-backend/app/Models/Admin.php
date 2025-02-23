@@ -1,15 +1,15 @@
 <?php
 
-
 namespace App\Models;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Admin extends Authenticatable
+class Admin extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory;
+    use  HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -19,8 +19,13 @@ class Admin extends Authenticatable
 
     protected $hidden = [
         'password',
+        'remember_token',
     ];
-}
-class User extends Authenticatable {
-    use HasApiTokens, Notifiable;
+    public function getJWTIdentifier() {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims() {
+        return [];
+    }
 }

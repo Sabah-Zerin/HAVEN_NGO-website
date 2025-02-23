@@ -1,8 +1,14 @@
 <?php
-/*
+
 return [
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => [
+        'api/*',
+        'sanctum/csrf-cookie',
+        'login',
+        'logout',
+        'admin/*'
+    ],
 
     'allowed_methods' => ['*'],
 
@@ -19,7 +25,7 @@ return [
     'supports_credentials' => true,
 
 ];
-*/
+/*
 return [
     'paths' => ['api/*', 'sanctum/csrf-cookie'],  // Ensure API routes are accessible
     'allowed_methods' => ['*'], // Allow all HTTP methods
@@ -28,4 +34,4 @@ return [
     'exposed_headers' => [],
     'max_age' => 0,
     'supports_credentials' => true,
-];
+];*/
