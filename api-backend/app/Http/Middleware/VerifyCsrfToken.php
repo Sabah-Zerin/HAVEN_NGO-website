@@ -16,5 +16,6 @@ protected $except = [
     'api/*',
     'sanctum/csrf-cookie',
     'admin/*'
+    
 ];
 }

@@ -1,6 +1,10 @@
 <?php
+use App\Http\Controllers\PaymentController;
 
 use Illuminate\Support\Facades\Route;
+Route::post('/pay', [PaymentController::class, 'initiatePayment'])->name('pay');
+Route::get('/payment-success', [PaymentController::class, 'success']);
+Route::get('/payment-fail', [PaymentController::class, 'fail']);
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
+
 
 require __DIR__.'/auth.php';
