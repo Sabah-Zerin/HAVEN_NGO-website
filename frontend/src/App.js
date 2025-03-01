@@ -7,6 +7,7 @@ import PaymentDetails from './pages/PaymentDetails';
 import PaymentStatus from './pages/PaymentStatus';
 import AdminLogin from './pages/authentication/AdminLogin';
 import AdminSignup from './pages/authentication/AdminSignup';
+import AdminDashboard from "./pages/authentication/AdminDashboard";
 import Login from './pages/authentication/Login';
 import Signup from './pages/authentication/Signup';
 import Profile from './pages/authentication/Profile';
@@ -34,6 +35,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin-register" element={<AdminSignup />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
