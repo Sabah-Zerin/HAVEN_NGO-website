@@ -1,0 +1,59 @@
+/* Universal Styles */
+.payment-status-container,
+.payment-details-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: #f8f9fa;
+}
+
+.payment-card,
+.status-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Payment Details Specific */
+.payment-details-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.payment-details-container input {
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Status Specific Styles */
+.status-card h2 {
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.status-card.success h2 { color: #38a169; }
+.status-card.fail h2 { color: #e53e3e; }
+.status-card.cancel h2 { color: #dd6b20; }
+
+.action-button {
+  background: #4299e1;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1.5rem;
+}
