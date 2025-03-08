@@ -6,6 +6,7 @@ return [
         'payment/*',
         'login',
         'logout',
+        'contact',
         'sanctum/csrf-cookie'
     ],
 
