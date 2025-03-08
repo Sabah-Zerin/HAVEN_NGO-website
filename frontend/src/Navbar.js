@@ -28,15 +28,12 @@ const Navbar = () => {
           </button>
           {dropdownOpen && (
             <div className="dropdown-menu">
-              <Link to="/login" onClick={() => setDropdownOpen(false)}>
-                User Login
-              </Link>
-              <Link to="/admin-login" onClick={() => setDropdownOpen(false)}>
-                Admin Login
-              </Link>
+              <Link to="/login" onClick={() => setDropdownOpen(false)}>User Login</Link>
+              <Link to="/admin-login" onClick={() => setDropdownOpen(false)}>Admin Login</Link>
             </div>
           )}
         </div>
+
 
         <Link to="/contact" className={location.pathname === "/contact" ? "active-link" : ""}>
           Contact Us
