@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Campaigns.css';
 
@@ -15,6 +16,8 @@ const Campaigns = () => {
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+
+  const navigate = useNavigate();  // Initialize useNavigate
 
   useEffect(() => {
     fetchCampaigns();
@@ -33,6 +36,10 @@ const Campaigns = () => {
     } catch (error) {
       setError(error.response?.data?.message || 'Failed to fetch campaigns');
     }
+  };
+
+  const handleDonateClick = (campaignId) => {
+    navigate(`/donation?campaignId=${campaignId}`);  // Navigate to donation page with campaign ID
   };
 
   const handleSubmit = async (e) => {
@@ -156,7 +163,9 @@ const Campaigns = () => {
               <span>Created by: {campaign.admin?.name || 'Admin'}</span>
             </div>
             <div className="campaign-actions">
-              <button className="donate-button">Donate Now</button>
+            <button className="donate-button" onClick={() => handleDonateClick(campaign.id)}>
+                Donate Now
+              </button>
             </div>
           </div>
         ))}

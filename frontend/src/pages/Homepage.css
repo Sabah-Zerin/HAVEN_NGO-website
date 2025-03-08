@@ -19,7 +19,7 @@ body {
 
 .nav-links {
   display: flex;
-  gap: 25px; /* Increased spacing */
+  gap: 25px; 
   align-items: center;
 }
 
@@ -34,7 +34,7 @@ body {
   text-decoration: none;
   transition: all 0.3s ease-in-out;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-  white-space: nowrap; /* Prevents text from wrapping */
+  white-space: nowrap; 
 }
 
 .nav-links a:hover {
@@ -45,48 +45,93 @@ body {
 }
 
 /* Dropdown for Log-in */
+
 .login-dropdown {
   position: relative;
+  display: inline-block;
+}
+
+.login-dropdown:hover .dropdown-content {
+  display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
 .login-dropdown .dropdown-content {
   display: none;
   position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  margin-top: 10px;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 180px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.login-dropdown .dropdown-content a {
+/* Dropdown Arrow */
+.dropdown-content::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+}
+
+.dropdown-content a {
   display: block;
   padding: 12px 20px;
-  border-radius: 0;
-  background: white;
-  color: #12151a;
+  color: #2d3748;
   font-size: 16px;
-  font-weight: 600;
-  text-align: left;
   text-decoration: none;
-  transition: background 0.3s ease-in-out;
-  box-shadow: none;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
-.login-dropdown .dropdown-content a:hover {
-  background: #f1f1f1;
-  transform: none;
+.dropdown-content a:first-child {
+  border-radius: 12px 12px 0 0;
 }
 
-.login-dropdown:hover .dropdown-content {
-  display: block;
+.dropdown-content a:last-child {
+  border-radius: 0 0 12px 12px;
+}
+
+.dropdown-content a:hover {
+  background: #f7fafc;
+  color: #1a202c;
+  padding-left: 24px;
+}
+
+/* Keep login button styling consistent */
+.nav-links .login-btn {
+  background: rgb(212, 208, 208);
+  padding: 12px 30px;
+  position: relative;
+}
+
+/* Add caret indicator */
+.login-btn::after {
+  content: '▾';
+  margin-left: 8px;
+  font-size: 0.9em;
+  color: #4a5568;
+}
+
+/* Hover effect for login button */
+.login-btn:hover {
+  background: #d9e2ec !important;
 }
 
 /* Hero Section */
 .hero {
-  margin-top: 85px; /* Added more space below navbar */
+  margin-top: 85px; 
   margin-bottom: 50px;
 }
 
@@ -116,7 +161,7 @@ body {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 40px; /* Increased spacing */
+  gap: 40px; 
   padding: 40px;
 }
 
