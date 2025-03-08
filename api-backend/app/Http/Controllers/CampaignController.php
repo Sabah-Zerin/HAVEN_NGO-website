@@ -12,34 +12,6 @@ class CampaignController extends Controller
     {
         $this->middleware('auth:admin')->except(['index']);
     }
-/*
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'target_amount' => 'required|numeric|min:0.01',
-            'end_date' => 'required|date'
-        ]);
-
-        try {
-            $campaign = Campaign::create([
-                'admin_id' => auth('admin')->id(),
-                'name' => $validated['name'],
-                'description' => $validated['description'],
-                'target_amount' => $validated['target_amount'],
-                'end_date' => $validated['end_date']
-            ]);
-
-            return response()->json($campaign, 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Campaign creation failed',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-*/
 public function store(Request $request)
 {
     $request->validate([

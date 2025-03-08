@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ContactMessageController;
 
 // Public Routes
 Route::post('/signup', [AuthController::class, 'signup']);
@@ -13,6 +14,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/admin/register', [AdminController::class, 'register']);
 Route::post('/admin/login', [AdminController::class, 'login']);
 Route::get('/campaigns', [CampaignController::class, 'index']);
+
+Route::post('/contact', [ContactMessageController::class, 'store']);
 
 // SSLCommerz Callback Routes
 Route::post('/payment/success', [PaymentController::class, 'paymentSuccess']);
