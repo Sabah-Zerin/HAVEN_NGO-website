@@ -22,15 +22,17 @@ class PaymentController extends Controller
             ? 'https://sandbox.sslcommerz.com' 
             : 'https://securepay.sslcommerz.com';
 
+        $tran_id = uniqid();
+
         $post_data = [
             'store_id' => env('SSLCOMMERZ_STORE_ID'),
             'store_passwd' => env('SSLCOMMERZ_STORE_PASSWORD'),
             'total_amount' => $request->amount,
             'currency' => "BDT",
-            'tran_id' => uniqid(),
-            'success_url' => env('FRONTEND_URL').'/payment-success',
-            'fail_url' => env('FRONTEND_URL').'/payment-fail',
-            'cancel_url' => env('FRONTEND_URL').'/payment-cancel',
+            'tran_id' => $tran_id,
+            'success_url' => env('APP_URL').'/api/payment/success/'.$tran_id,
+            'fail_url' => env('APP_URL').'/api/payment/fail/'.$tran_id,
+            'cancel_url' => env('APP_URL').'/api/payment/cancel/'.$tran_id,
             'cus_name' => $request->name,
             'cus_email' => $request->email,
             'cus_add1' => $request->address ?? 'N/A',
@@ -62,5 +64,41 @@ class PaymentController extends Controller
         }
     }
 
-    
+    public function paymentSuccess(Request $request, $tran_id)
+    {
+        if($this->validateIPN($request->all())) {
+            $amount = $request->input('amount');
+            return redirect()->away(
+                env('FRONTEND_URL')."/payment-success?tran_id=$tran_id&amount=$amount"
+            );
+        }
+        return redirect()->away(env('FRONTEND_URL').'/payment-fail');
+    }
+
+    private function validateIPN($data)
+    {
+        $store_id = env('SSLCOMMERZ_STORE_ID');
+        $store_passwd = env('SSLCOMMERZ_STORE_PASSWORD');
+        $val_id = $data['val_id'];
+        
+        try {
+            $client = new Client();
+            $response = $client->get("https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php", [
+                'query' => [
+                    'val_id' => $val_id,
+                    'store_id' => $store_id,
+                    'store_passwd' => $store_passwd,
+                    'format' => 'json'
+                ],
+                'verify' => false
+            ]);
+
+            $result = json_decode($response->getBody(), true);
+            return $result['status'] === 'VALID' || $result['status'] === 'VALIDATED';
+
+        } catch (\Exception $e) {
+            Log::error('IPN Validation Error: '.$e->getMessage());
+            return false;
+        }
+    }
 }
